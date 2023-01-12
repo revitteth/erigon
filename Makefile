@@ -1,4 +1,4 @@
-GO = go # if using docker, should not need to be installed/linked
+GO=go # if using docker, should not need to be installed/linked
 GOBIN = $(CURDIR)/build/bin
 UNAME = $(shell uname) # Supported: Darwin, Linux
 DOCKER := $(shell command -v docker 2> /dev/null)
@@ -129,6 +129,11 @@ $(COMMANDS): %: %.cmd
 ## all:                               run erigon with all commands
 all: erigon $(COMMANDS)
 
+export GO_BUILD=$(GO_DBG_BUILD)
+## all-delve:                         run erigon with all commands and debug build
+all-delve:
+	@make erigon $(COMMANDS)
+
 ## db-tools:                          build db tools
 db-tools:
 	@echo "Building db-tools"
@@ -141,6 +146,7 @@ db-tools:
 
 ## test:                              run unit tests with a 50s timeout
 test:
+
 	$(GOTEST) --timeout 50s
 
 test3:
